@@ -1,0 +1,12 @@
+name: Folder7 CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-folder7:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run folder7.py
+        run: python Folder7/folder7.py

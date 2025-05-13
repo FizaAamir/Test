@@ -1,0 +1,12 @@
+name: Folder6 CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-folder6:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run folder6.py
+        run: python Folder6/folder6.py

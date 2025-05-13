@@ -3,8 +3,6 @@ name: CI Dispatcher
 
 on:
   push:
-    paths:
-      - '**/*.py'
 
 jobs:
   detect-changes:
@@ -16,26 +14,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # important to allow diffing with previous commit
+          fetch-depth: 0
 
       - name: Get changed top-level folders
         id: get_changed_dirs
         run: |
           echo "Fetching changed folders..."
           folders=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d '/' -f1 | sort -u)
-          folders=$(echo "$folders" | tr '\n' ' ')  # <-- flatten output
+          folders=$(echo "$folders" | tr '\n' ' ')
           echo "Detected folders: $folders"
           echo "folders=$folders" >> "$GITHUB_OUTPUT"
 
       - name: Trigger folder workflows
         run: |
           for folder in ${{ steps.get_changed_dirs.outputs.folders }}; do
-            workflow=".github/workflows/${folder,,}-workflow.yml"
+            workflow="${folder}/${folder,,}-workflow.yml"
             if [ -f "$workflow" ]; then
               echo "Triggering $workflow"
-              gh workflow run "${folder,,}-workflow.yml"
+              gh workflow run "$workflow"
             else
-              echo "No workflow found for $folder"
+              echo "No workflow found at $workflow"
             fi
           done
         env:

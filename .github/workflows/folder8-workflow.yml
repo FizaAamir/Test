@@ -1,0 +1,12 @@
+name: Folder8 CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-folder8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run folder8.py
+        run: python Folder8/folder8.py

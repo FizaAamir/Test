@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run folder7.py
-        run: python Folder7/folder7.py
+        run: python Folder7/folder7.py 

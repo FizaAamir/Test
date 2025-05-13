@@ -1,0 +1,38 @@
+# .github/workflows/dispatcher.yml
+name: CI Dispatcher
+
+on:
+  push:
+    paths:
+      - '**/*.py'
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changed-folders: ${{ steps.get_changed_dirs.outputs.folders }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get changed top-level folders
+        id: get_changed_dirs
+        run: |
+          echo "Fetching changed folders..."
+          folders=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d '/' -f1 | sort -u)
+          echo "folders=${folders}" >> $GITHUB_OUTPUT
+
+      - name: Trigger folder workflows
+        run: |
+          for folder in ${{ steps.get_changed_dirs.outputs.folders }}; do
+            workflow=".github/workflows/${folder,,}-workflow.yml"
+            if [ -f "$workflow" ]; then
+              echo "Triggering $workflow"
+              gh workflow run "${folder,,}-workflow.yml"
+            else
+              echo "No workflow found for $folder"
+            fi
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

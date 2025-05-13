@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # important to allow diffing with previous commit
 
       - name: Get changed top-level folders
         id: get_changed_dirs

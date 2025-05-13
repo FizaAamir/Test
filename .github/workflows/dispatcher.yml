@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "Fetching changed folders..."
           folders=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d '/' -f1 | sort -u)
-          echo "folders=${folders}" >> $GITHUB_OUTPUT
+          printf "folders=%s\n" "$folders" >> "$GITHUB_OUTPUT"
 
       - name: Trigger folder workflows
         run: |

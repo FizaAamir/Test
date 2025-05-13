@@ -1,0 +1,13 @@
+name: Folder3 CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-folder3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run folder3.py
+        run: python Folder3/folder3.py

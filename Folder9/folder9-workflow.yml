@@ -1,0 +1,14 @@
+name: Folder 9 CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Folder9 job
+        run: echo "Running Folder9 CI"
